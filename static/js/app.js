@@ -7,6 +7,7 @@ let selectedUpdateId = null;
 const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearchBtn');
 const refreshBtn = document.getElementById('refreshBtn');
+const exportCsvBtn = document.getElementById('exportCsvBtn');
 const notesFeed = document.getElementById('notesFeed');
 const loadingState = document.getElementById('loadingState');
 const emptyState = document.getElementById('emptyState');
@@ -70,6 +71,9 @@ function initEventListeners() {
     refreshBtn.addEventListener('click', () => {
         fetchUpdates(true);
     });
+
+    // Export CSV button
+    exportCsvBtn.addEventListener('click', exportToCsv);
 
     // Reset filters button in empty state
     resetFiltersBtn.addEventListener('click', resetAllFilters);
@@ -456,6 +460,55 @@ function resetAllFilters() {
     applyFilters();
 }
 
+// Export filtered updates to CSV file
+function exportToCsv() {
+    if (filteredUpdates.length === 0) {
+        showToast('No updates to export.', true);
+        return;
+    }
+    
+    // CSV Headers
+    const headers = ['Date', 'Type', 'Content Text', 'Link', 'ID'];
+    const csvRows = [headers.join(',')];
+    
+    filteredUpdates.forEach(update => {
+        // Escape quotes by doubling them, wrap fields in quotes
+        const cleanedText = update.content_text.replace(/"/g, '""');
+        const cleanedDate = update.date.replace(/"/g, '""');
+        const cleanedType = update.type.replace(/"/g, '""');
+        const cleanedLink = update.link.replace(/"/g, '""');
+        const cleanedId = update.id.replace(/"/g, '""');
+        
+        const row = [
+            `"${cleanedDate}"`,
+            `"${cleanedType}"`,
+            `"${cleanedText}"`,
+            `"${cleanedLink}"`,
+            `"${cleanedId}"`
+        ];
+        csvRows.push(row.join(','));
+    });
+    
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    const categoryName = currentCategory.toLowerCase();
+    const formattedDate = new Date().toISOString().split('T')[0];
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `bigquery_releases_${categoryName}_${formattedDate}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showToast('CSV export downloaded successfully!');
+}
+
 // Global scope functions to handle onclick attributes in dynamic cards
 window.copyUpdateText = copyUpdateText;
 window.openTweetComposer = openTweetComposer;
+window.exportToCsv = exportToCsv;
