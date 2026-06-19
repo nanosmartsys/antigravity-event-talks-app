@@ -334,6 +334,14 @@ function openTweetComposer(updateId) {
     // Open drawer
     tweetDrawer.classList.add('open');
     tweetDrawer.setAttribute('aria-hidden', 'false');
+    
+    // Auto-focus textarea and place cursor at the end of the text (after drawer slide transition)
+    setTimeout(() => {
+        tweetTextArea.focus();
+        const textVal = tweetTextArea.value;
+        tweetTextArea.value = '';
+        tweetTextArea.value = textVal;
+    }, 300);
 }
 
 // Close Tweet Drawer
