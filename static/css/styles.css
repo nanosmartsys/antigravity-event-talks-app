@@ -43,6 +43,70 @@
     --font-mono: 'JetBrains Mono', monospace;
 }
 
+/* Light Theme Variables Override */
+body.light-theme {
+    --bg-base: #f1f5f9;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #e2e8f0;
+    --bg-glass: rgba(255, 255, 255, 0.75);
+    
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-glow: rgba(14, 165, 233, 0.08);
+    
+    --primary: #0ea5e9;
+    --primary-glow: rgba(14, 165, 233, 0.2);
+    --primary-hover: #0284c7;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    
+    /* Modify type-specific glowing backgrounds for light bg contrast */
+    --color-feature-glow: rgba(16, 185, 129, 0.06);
+    --color-announcement-glow: rgba(139, 92, 246, 0.06);
+    --color-issue-glow: rgba(244, 63, 94, 0.06);
+    --color-changed-glow: rgba(251, 191, 36, 0.06);
+    --color-deprecated-glow: rgba(249, 115, 22, 0.06);
+    --color-default-glow: rgba(100, 116, 139, 0.06);
+}
+
+/* Light Theme Background Adjustment */
+body.light-theme {
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 40%);
+}
+
+/* Light Theme overrides for inputs, buttons, and elements */
+body.light-theme .search-wrapper input {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--text-primary);
+}
+body.light-theme .search-wrapper input:focus {
+    background: #ffffff;
+}
+body.light-theme .hashtag-pill {
+    background: rgba(0, 0, 0, 0.04);
+}
+body.light-theme .selected-update-preview {
+    background: rgba(0, 0, 0, 0.02);
+}
+body.light-theme .tweet-composer-area textarea {
+    background: rgba(255, 255, 255, 0.8);
+}
+body.light-theme .tweet-composer-area textarea:focus {
+    background: #ffffff;
+}
+
+/* Theme Toggle Button Visibility */
+body.light-theme .icon-sun {
+    display: none !important;
+}
+body.light-theme .icon-moon {
+    display: block !important;
+}
+
+
 /* Global Styles */
 * {
     box-sizing: border-box;
